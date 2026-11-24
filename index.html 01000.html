@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Md stream - Cool Collection of Tamil Serials & Shows</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #fbf5e9;
+      --card-white: #ffffff;
+      --text-dark: #2c2c2c;
+      --text-muted: #6e6a63;
+      --border-soft: #e6decb;
+      --accent-gold: #d97706;
+      --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      font-family: 'Lora', Georgia, serif;
+      line-height: 1.5;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Header Section */
+    header {
+      text-align: center;
+      padding: 28px 0 16px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .site-title {
+      font-size: 2.6rem;
+      font-weight: 600;
+      color: #333333;
+      letter-spacing: -0.5px;
+      cursor: pointer;
+    }
+
+    .site-subtitle {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-top: 22px;
+      padding: 8px 0;
+    }
+
+    .menu-btn {
+      background: none;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .search-toggle {
+      position: absolute;
+      right: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+      padding: 6px;
+    }
+
+    /* Search Box */
+    .search-box {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .search-box.active {
+      display: block;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      outline: none;
+    }
+
+    /* Channel Filter Section */
+    .section-heading {
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: #444;
+      margin: 22px 0 14px;
+      text-transform: uppercase;
+    }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .channel-card {
+      background: var(--card-white);
+      border: 1px solid #ece6d8;
+      border-radius: 12px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .channel-card:hover, .channel-card.active {
+      transform: translateY(-2px);
+      border-color: #333;
+    }
+
+    .channel-badge {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 8px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: #fff;
+    }
+
+    .sun-bg { background: linear-gradient(135deg, #f97316, #dc2626); }
+    .vijay-bg { background: linear-gradient(135deg, #f59e0b, #ea580c); }
+    .zee-bg { background: linear-gradient(135deg, #ec4899, #f97316); }
+    .sony-bg { background: linear-gradient(135deg, #1d4ed8, #0f172a); }
+
+    .channel-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #222;
+    }
+
+    /* Episodes List */
+    .episodes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .episode-card {
+      background: var(--card-white);
+      border: 1px solid #ece6d8;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .episode-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .episode-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      background-color: #e5dec9;
+    }
+
+    .episode-info {
+      padding: 16px 18px 20px;
+      text-align: center;
+    }
+
+    .serial-tag {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .episode-title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #2b2b2b;
+      line-height: 1.35;
+    }
+
+    /* Single Episode Watch View */
+    .watch-view {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .watch-view.active {
+      display: block;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+      background: #fff;
+      border: 1px solid var(--border-soft);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .watch-header {
+      text-align: center;
+      margin: 18px 0 22px;
+    }
+
+    .watch-title {
+      font-size: 1.65rem;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .watch-category {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .player-box {
+      background: #fff;
+      border: 1px solid #e5dec9;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .player-box.recommended {
+      background: #f4f8fc;
+      border-color: #d6e4f2;
+    }
+
+    .source-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(20, 20, 20, 0.88);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px 0 8px 0;
+      z-index: 2;
+    }
+
+    .rec-heading {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .rec-heading h3 {
+      font-size: 1.15rem;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .rec-heading p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: #475569;
+    }
+
+    .tap-btn {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+      color: #212529;
+      font-size: 1.02rem;
+      font-weight: 500;
+      transition: background 0.15s ease;
+    }
+
+    .tap-btn:hover {
+      background: #eef1f4;
+    }
+
+    .filter-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .reset-filter {
+      color: #b45309;
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      font-size: 0.85rem;
+    }
+
+    .loading-text {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 30px 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-soft);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1 class="site-title" onclick="goHome()">Md stream</h1>
+      <p class="site-subtitle">Cool Collection of Tamil Serials &amp; Shows</p>
+
+      <div class="nav-bar">
+        <button class="menu-btn" onclick="goHome()">
+          <span>&#9776;</span> MENU
+        </button>
+        <button class="search-toggle" onclick="toggleSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="search-box" id="searchBox">
+        <input type="text" id="searchInput" placeholder="Search serials, shows, channels..." oninput="renderEpisodes()" />
+      </div>
+    </header>
+
+    <!-- Home Feed View -->
+    <main id="homeView">
+      <div class="section-heading">BROWSE BY CHANNEL</div>
+      <div class="channels-grid">
+        <div class="channel-card" data-channel="Sun TV" onclick="selectChannel('Sun TV', this)">
+          <div class="channel-badge sun-bg">SUN TV</div>
+          <div class="channel-name">Sun TV</div>
+        </div>
+        <div class="channel-card" data-channel="Vijay TV" onclick="selectChannel('Vijay TV', this)">
+          <div class="channel-badge vijay-bg">VIJAY</div>
+          <div class="channel-name">Vijay TV</div>
+        </div>
+        <div class="channel-card" data-channel="Zee Tamil" onclick="selectChannel('Zee Tamil', this)">
+          <div class="channel-badge zee-bg">ZEE தமிழ்</div>
+          <div class="channel-name">Zee Tamil</div>
+        </div>
+        <div class="channel-card" data-channel="Sony Vizha" onclick="selectChannel('Sony Vizha', this)">
+          <div class="channel-badge sony-bg">SONY</div>
+          <div class="channel-name">Sony Vizha</div>
+        </div>
+      </div>
+
+      <div class="filter-status" id="filterStatus" style="display:none;">
+        <span id="filterLabel">Showing: All Channels</span>
+        <button class="reset-filter" onclick="resetFilters()">Show All</button>
+      </div>
+
+      <div class="episodes-list" id="episodesList">
+        <div class="loading-text">Loading serials...</div>
+      </div>
+    </main>
+
+    <!-- Single Episode Watch View -->
+    <section class="watch-view" id="watchView">
+      <button class="back-btn" onclick="goHome()">&larr; Back to Serials</button>
+
+      <img id="watchBanner" class="episode-thumb" style="border-radius: 10px;" src="" alt="Serial Banner" />
+
+      <div class="watch-header">
+        <h2 class="watch-title" id="watchTitle"></h2>
+        <div class="watch-category">in <u id="watchSerialName"></u></div>
+      </div>
+
+      <!-- Primary Video Player Box -->
+      <div class="player-box">
+        <span class="source-badge" id="watchSourceBadge">Vimeo</span>
+        <img id="watchThumb1" class="episode-thumb" style="border-radius: 8px;" src="" alt="Video Preview" />
+        <a id="watchPrimaryLink" class="tap-btn" href="#" target="_blank" rel="noopener noreferrer">
+          &#9757; Tap to watch &ndash; opens external video source
+        </a>
+      </div>
+
+      <!-- Recommended Player Box -->
+      <div class="player-box recommended">
+        <div class="rec-heading">
+          <h3>Recommended player</h3>
+          <p>Start with this player. If loading is slow or playback buffers, try the alternative below.</p>
+        </div>
+        <img id="watchThumb2" class="episode-thumb" style="border-radius: 8px;" src="" alt="Alternative Player Preview" />
+        <a id="watchRecLink" class="tap-btn" href="#" target="_blank" rel="noopener noreferrer">
+          &#9757; Tap to watch &ndash; opens external video source
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2026 Md stream. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // உங்கள் Google Sheet Published CSV Link இணைக்கப்பட்டுள்ளது
+    const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSfFRGaYLyJ5stxgVWzlFrgMmHEHoERuCvE4yrt_5Yd6gUqliLirzfaoOPvd66YJTwfpSELQNNDnGg6o/pub?gid=0&single=true&output=csv";
+
+    const FALLBACK_THUMB = "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=900&q=80";
+
+    let episodesData = [];
+    let activeChannel = "";
+
+    async function loadFromGoogleSheet() {
+      try {
+        // Cache-busting timestamp சேர்க்கப்பட்டுள்ளதால் Google Sheet அப்டேட் உடனடியாகத் தெரியும்
+        const cacheBusterUrl = `${GOOGLE_SHEET_CSV_URL}&t=${new Date().getTime()}`;
+        const res = await fetch(cacheBusterUrl);
+        const csvText = await res.text();
+        const rows = parseCSV(csvText);
+
+        if (rows.length > 1) {
+          episodesData = rows.slice(1).map(cols => ({
+            id: cols[0] || "",
+            title: cols[1] || "",
+            serialName: cols[2] || "",
+            channel: cols[3] || "",
+            date: cols[4] || "",
+            thumbnail: cols[5] || FALLBACK_THUMB,
+            primarySource: cols[6] || "Vimeo",
+            primaryUrl: cols[7] || "#",
+            recommendedUrl: cols[8] || "#",
+            status: cols[9] || "Published"
+          })).filter(ep => ep.status.toLowerCase() === "published" && ep.title);
+        }
+      } catch (err) {
+        console.error("Google Sheet load error:", err);
+      }
+      renderEpisodes();
+    }
+
+    function parseCSV(text) {
+      const lines = text.split(/\r?\n/);
+      return lines.map(line => {
+        const result = [];
+        let cur = "";
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') {
+            inQuotes = !inQuotes;
+          } else if (ch === ',' && !inQuotes) {
+            result.push(cur.trim());
+            cur = "";
+          } else {
+            cur += ch;
+          }
+        }
+        result.push(cur.trim());
+        return result;
+      });
+    }
+
+    function toggleSearch() {
+      const box = document.getElementById("searchBox");
+      box.classList.toggle("active");
+      if (box.classList.contains("active")) {
+        document.getElementById("searchInput").focus();
+      }
+    }
+
+    function selectChannel(channel, element) {
+      if (activeChannel === channel) {
+        resetFilters();
+        return;
+      }
+      activeChannel = channel;
+      document.querySelectorAll(".channel-card").forEach(card => card.classList.remove("active"));
+      element.classList.add("active");
+      document.getElementById("filterStatus").style.display = "flex";
+      document.getElementById("filterLabel").textContent = `Channel: ${channel}`;
+      renderEpisodes();
+    }
+
+    function resetFilters() {
+      activeChannel = "";
+      document.getElementById("searchInput").value = "";
+      document.querySelectorAll(".channel-card").forEach(card => card.classList.remove("active"));
+      document.getElementById("filterStatus").style.display = "none";
+      renderEpisodes();
+    }
+
+    function renderEpisodes() {
+      const listEl = document.getElementById("episodesList");
+      const query = document.getElementById("searchInput").value.toLowerCase().trim();
+
+      const filtered = episodesData.filter(ep => {
+        const matchesChannel = !activeChannel || ep.channel.toLowerCase() === activeChannel.toLowerCase();
+        const matchesQuery = !query ||
+          ep.title.toLowerCase().includes(query) ||
+          ep.serialName.toLowerCase().includes(query) ||
+          ep.channel.toLowerCase().includes(query);
+        return matchesChannel && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<p class="loading-text">No serials found.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(ep => `
+        <article class="episode-card" onclick="openEpisode('${ep.id}')">
+          <img class="episode-thumb" src="${ep.thumbnail}" onerror="this.src='${FALLBACK_THUMB}'" alt="${ep.title}" loading="lazy" />
+          <div class="episode-info">
+            <div class="serial-tag">${ep.serialName}</div>
+            <h2 class="episode-title">${ep.title}</h2>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function openEpisode(id) {
+      const ep = episodesData.find(item => item.id === id);
+      if (!ep) return;
+
+      document.getElementById("watchBanner").src = ep.thumbnail;
+      document.getElementById("watchThumb1").src = ep.thumbnail;
+      document.getElementById("watchThumb2").src = ep.thumbnail;
+      document.getElementById("watchTitle").textContent = ep.title;
+      document.getElementById("watchSerialName").textContent = ep.serialName;
+      document.getElementById("watchSourceBadge").textContent = ep.primarySource || "Vimeo";
+      document.getElementById("watchPrimaryLink").href = ep.primaryUrl || "#";
+      document.getElementById("watchRecLink").href = ep.recommendedUrl || "#";
+
+      document.getElementById("homeView").style.display = "none";
+      document.getElementById("watchView").classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function goHome() {
+      document.getElementById("watchView").classList.remove("active");
+      document.getElementById("homeView").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    loadFromGoogleSheet();
+  </script>
+</body>
+</html>
